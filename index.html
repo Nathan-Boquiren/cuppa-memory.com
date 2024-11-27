@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorize | Cuppa Memory</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <nav id="navBar">
+        <ul>
+            <span class="nav-line-break"></span>
+            <li>
+                <a href="index.html">New Game</a>
+            </li>
+            <li>
+                <a href="how-to-play.html">How to Play</a>
+            </li>
+            <li>
+                <a href="memorization-techniques.html">Memorization Tips</a>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+        </ul>
+    </nav>
+    <div id="hamburger">
+        <span class="hamburgerLine" id="line1"></span>
+        <span class="hamburgerLine" id="line2"></span>
+        <span class="hamburgerLine" id="line3"></span>
+    </div>
+    <header>
+        <h1>Cuppa Memory</h1>
+        <img src="mug.png" alt="mug" class="mug">
+        <a href="index.html"><button class="headerNewGameBtn">Start New Game</button></a>
+    </header>
+
+    <div id="app">
+
+        <textarea id="passageInput" placeholder="Write or paste the passage that you want to memorize here"></textarea>
+    
+        
+        <button id="startBtn">Start Memorizing</button>
+
+        <div id="gameArea" style="display:none;">
+            
+                <p id="displayText"></p>
+
+                <input type="text" id="userInput" autocomplete="off" placeholder="Enter the missing word(s)">
+
+                <div id="inputOther">
+                    <p id="feedback"></p>
+                    <button id="submitBtn">Submit</button>
+                </div>
+
+                <p id="correctAnswer"></p>
+
+
+                <div id="gameEndButtons" style="display:none;">
+                    <button class="gameEndButton" id="restartGame">Restart</button>
+                    <a href="index.html"><button class="gameEndButton">New Game</button></a>
+                </div>
+        </div>
+    </div>
+      
+    
+
+  <script src="script.js"></script>
+  <script src="hamburger.js"></script>
+</body>
+</html>

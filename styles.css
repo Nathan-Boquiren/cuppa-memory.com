@@ -1,0 +1,467 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: 'EB Garamond', Times New Roman, Times, serif;
+    font-size: 22px;
+    box-sizing: border-box;
+
+}
+
+/* ::selection {
+    background-color: var(--light-brown);
+    color: var(--dark-brown);
+} */
+
+:root {
+    --light-brown: #d2b48c;
+    --mid-brown: #967242;
+    --mid-dark-brown: #775932;
+    --dark-brown: #473721;
+
+}
+
+
+body {
+    height: 100vh;
+    text-align: center;
+    background-color: var(--light-brown);
+    position: relative;
+    padding-top: 100px;
+}
+
+header {
+    padding: 20px;
+    background-color: var(--mid-brown);
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: fixed;
+    top: 0;
+    z-index: 5;
+    height: auto;
+}
+h1 {
+    font-size: clamp(30px, 6vw, 40px);
+    color: white;
+}
+.mug {
+    padding-left: 15px;
+    height: auto;
+    width: clamp(45px, 6vw, 60px);
+}
+
+.headerNewGameBtn {
+    background-color: white;
+    color: var(--dark-brown);
+    border: 4px solid var(--dark-brown);
+    position: absolute;
+    right: 25px;
+    top: 30px;
+}
+.headerNewGameBtn:hover {
+    background-color: var(--dark-brown);
+    color: white;
+    border-color: var(--dark-brown);
+}
+
+#hamburger {
+    position: fixed;
+    top: 30px;
+    left: 25px;
+    margin-right: auto;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+    z-index: 20;
+    filter: drop-shadow(1px 1px 0px rgba(0, 0, 0, 0.25));
+}
+
+
+.hamburgerLine {
+    width: 100%;
+    height: 4px;
+    background-color: var(--dark-brown);
+    border-radius: 2px;
+    transition: transform 0.3s ease, width 0.3s ease, background-color 0.3s ease;
+}
+@media (max-width: 768px) {
+    .headerNewGameBtn {
+        display: none;
+    }
+}
+@media (max-width: 425px) {
+    #hamburger {
+        top: 25px;
+        left: 18px;
+        scale: 0.8;
+
+    }
+    header {
+        justify-content: flex-end;
+    }
+}
+#line3 {
+    transform-origin: 100% 50%;
+}
+
+#navBar {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    z-index: 10;
+    background-color: var(--dark-brown);
+    padding: 20px;
+    width: clamp(200px, 40vw, 300px);
+    transition: left 0.5s ease;
+}
+
+nav ul {
+    margin-top: 32px;
+    height: 100vh;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+.nav-line-break {
+    margin-top: 30px;
+    width: 100%;
+    z-index: 12;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--mid-brown);
+}
+nav ul li {
+    margin: 2vh 0;
+    width: 100%;
+    padding: 10px;
+    border-radius: 0px;
+    transition: border-radius 0.3s ease, background-color 0.3s ease, font-weight 0.3s ease;
+}
+nav ul li:hover {
+    background-color: var(--mid-brown);
+    border-radius: 10px 25px 25px 10px;
+    font-weight: 900;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+}
+
+
+
+
+#app {
+    margin: 5vh auto;
+    width: clamp(300px, 50vw, 600px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-size: 22px;
+}
+
+textarea {
+    border-radius: 10px;
+    width: 100%;
+    height: 25vh;
+    margin-bottom: 20px;
+    padding: 20px;
+    font-size: 22px;
+    outline: 2px solid var(--mid-brown);
+    resize: none;
+}
+
+textarea::placeholder {
+    font-size: 22px;
+    color: var(--dark-brown);
+}
+textarea:focus {
+    outline: 4px solid var(--mid-brown);
+}
+
+button {
+    background-color: var(--mid-brown);
+    font-size: 20px;
+    cursor: pointer;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 3px solid var(--mid-brown);
+    font-family: "Roboto", Helvetica, Arial, sans-serif;
+    letter-spacing: 1px;
+    font-weight: 600;
+    color: #fff;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-shadow: 1px 1px 0px rgba(0, 0, 0, 0.226);
+}
+button:hover, 
+#startBtn.active:hover {
+    background-color: var(--mid-dark-brown);
+    border-color: var(--mid-dark-brown);
+}
+
+
+#startBtn {
+    background-color: #fff;
+    color: var(--mid-brown);
+    cursor: not-allowed;
+}
+#startBtn:hover {
+    border-color: var(--mid-brown);
+}
+#startBtn.active {
+    background-color: var(--mid-brown);
+    color: white;
+    cursor: pointer;
+}
+
+
+#gameArea {
+    margin-top: 20px;
+}
+
+#displayText {
+    color: white;
+    background-color: var(--mid-dark-brown);
+    padding: 20px;
+    font-size: clamp(18px, 4vw, 28px);
+    border-radius: 10px;
+    width: clamp(300px, 80vw, 800px);
+    margin-bottom: 5vh;
+    line-height: 2;
+}
+#inputOther {
+    display: flex;
+    align-items: flex-start;
+}
+
+#userInput {
+    background-color: #fff6eb;
+    width: 100%;
+    min-width: 300px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 3px solid var(--mid-dark-brown);
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+#userInput::placeholder {
+    color: var(--mid-brown);
+    font-weight: 600;
+}
+#userInput:focus {
+    outline: none;
+}
+#submitBtn {
+    margin-left: auto;
+    font-size: clamp(18px, 4.5vw, 20px);
+    
+}
+
+@media (max-width: 425px) {
+    #submitBtn {
+        padding: 5px 10px;
+        transform: translateY(-10px);
+    }
+}
+
+#feedback {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    transform: translate(10px, -10px);
+    text-align: left;
+}
+
+.blank {
+    background-color: var(--mid-brown);
+    padding: 2px 6px 8px;
+    margin: 0 5px;
+    border-radius: 8px;
+}
+
+.correctAnswer {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    display: inline-block;
+    align-self: flex-start;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    background-color: red;
+    padding: 7px;
+    border-radius: 10px;
+    color: white;
+}
+
+#gameEndButtons {
+    align-items: center;
+    justify-content: space-around;
+    
+}
+
+
+
+/*  ---------- HOW TO PLAY PAGE ----------  */
+
+
+#instructions {
+    width: 70vw;
+    width: clamp(300px, 80vw, 800px);
+    margin: 3vh 0;
+    background-color: #fff;
+    border-radius: 20px;
+    display: flex;
+    align-self: center;
+    justify-self: center;
+    flex-direction: column;
+}
+
+.howToHeader {
+    font-size: clamp(25px, 4vw, 35px);
+    text-align: left;
+    background-color: var(--dark-brown);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px 20px 0 0;
+}
+
+
+.instructionsIntro {
+    padding: 20px 5vw;
+    text-align: left;
+    p {
+        font-size: clamp(22px, 4vw, 30px);
+        strong {
+            font-size: clamp(24px, 4.5vw, 32px);
+            color: var(--dark-brown);
+        }
+    }
+}
+
+.instructionsWelcome {
+    margin-bottom: 20px;
+}
+
+.instructionsList {
+    padding: 20px 5vw;
+    list-style: none;
+    text-align: left;
+}
+
+li {
+    padding: 15px 0;
+}
+.instructionHeader h3 {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: clamp(25px, 1vw, 30px);
+    color: var(--mid-brown);
+}
+
+.instructionsList li p {
+    /* font-size: 3vw; */
+    font-size: clamp(18px, 3vw, 22px);
+    padding-left: 10px;
+}
+
+.instructionHeader {
+    display: flex;
+    align-items: center;
+}
+
+.instructionNumber {
+    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--mid-brown);
+    color: white;
+    height: 30px;
+    width: 30px;
+    padding: 3px;
+    margin: 8px;
+    border-radius: 5px;
+    font-size: 25px;
+}
+.instructionsLineBreak {
+    display: inline-block;
+    width: 100%;
+    height: 2px;
+    background-color: var(--mid-brown);
+    margin: 5px;
+}
+
+.instructionOutro {
+    padding: 3vh 5vw;
+    font-size: clamp(20px, 3.5vw, 24px);
+    text-align: left;
+}
+
+.newGameBtn {
+    margin: 3vh;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* --------- MEMORIZATION TECHNIQUES PAGE ---------- */
+.memorization-techniques-page {
+    padding-top: var(--dynamic-height); /* Uses the dynamic height */
+}
+
+.article-container {
+    display: flex;
+    justify-content: center;
+}
+article {
+    width: clamp(280px, 70vw, 2000px);
+    text-align: left;
+}
+
+.article-header {
+    
+    background-color: white;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 20px;
+    
+}
+.article-header h2 {
+    width: clamp(280px, 70vw, 2000px);
+    font-size: clamp(30px, 4vw, 40px);
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 605px) {
+    .article-header {
+        padding-bottom: 10px;
+    }
+}
+
