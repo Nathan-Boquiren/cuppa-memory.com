@@ -21,34 +21,29 @@ passageInput.addEventListener("input", function () {
 startButton.disabled = true;
 
 let startGame = function () {
-  // Get the passage from the input field (new game)
   passage = document.getElementById("passageInput").value;
 
-  // Save the passage in localStorage
   localStorage.setItem("lastPassage", passage);
 
   initializeGame(passage);
 };
 
 let restartGame = function () {
-  // Load the saved passage from localStorage
   const savedPassage = localStorage.getItem("lastPassage");
 
   if (savedPassage) {
-    initializeGame(savedPassage); // Restart the game with the saved passage
+    initializeGame(savedPassage);
   } else {
     alert("No saved passage found! Start a new game first.");
   }
 };
 
 let initializeGame = function (gamePassage) {
-  // Set up the game with the provided passage
   passage = gamePassage;
   words = passage.split(" ");
   round = 1;
   level = 1;
 
-  // Update UI to start the game
   document.getElementById("passageInput").style.display = "none";
   document.getElementById("startBtn").style.display = "none";
   document.getElementById("gameEndButtons").style.display = "none";
@@ -172,3 +167,11 @@ document
   });
 
 document.getElementById("submitBtn").addEventListener("click", checkAnswer);
+
+let endGame = function () {
+  document.getElementById("displayText").textContent =
+    "Great job! You've completed the passage!";
+  document.getElementById("userInput").style.display = "none";
+  document.getElementById("inputOther").style.display = "none";
+  document.getElementById("gameEndButtons").style.display = "flex";
+};
