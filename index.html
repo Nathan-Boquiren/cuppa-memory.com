@@ -41,10 +41,43 @@
     </header>
 
     <div id="app">
+        <div id="chooseInputMethod">
+            <p id="inputMethodMessage">How would you like to start memorizing?</p>
+            <div class="inputMethodChoices">
+                <button id="openBibleSearchInterface">
+                    <img class="bibleIcon" src="bible-icon.png" alt="bible icon">
+                    Choose A<br>Bible Verse
+                </button>
+                <p>OR</p>
+                <button id="manualInput">
+                    <img class="typeIcon" src="text-input-icon.png" alt="text input icon">
+                    Write it yourself
+                </button>
+            </div>
+        </div>
+
+        <div id="bibleSearchContainer">
+            <h2>Search for a Bible Verse</h2>
+            <div id="bibleSearch">
+              <label for="bookSelect">Book:</label>
+              <select id="bookSelect" class="searchInput"></select>
+          
+              <label for="chapterInput">Chapter:</label>
+              <input type="number" id="chapterInput" class="searchInput" min="1" max="150">
+          
+              <label for="verseInput">Verse:</label>
+              <input type="number" id="verseInput" class="searchInput" min="1" max="176">
+          
+              <button id="searchVerseBtn" class="searchButton">Search Verse</button>
+            </div>
+        </div>
+
 
         <textarea id="passageInput" placeholder="Write or paste the passage that you want to memorize here"></textarea>
     
         
+
+
         <button id="startBtn">Start Memorizing</button>
 
         <div id="gameArea" style="display:none;">
@@ -67,7 +100,7 @@
                 </div>
         </div>
     </div>
-      
+
     
 
   <script src="script.js"></script>

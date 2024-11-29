@@ -175,3 +175,91 @@ let endGame = function () {
   document.getElementById("inputOther").style.display = "none";
   document.getElementById("gameEndButtons").style.display = "flex";
 };
+
+// Bible Database
+
+async function loadBooksList() {
+  try {
+    const response = await fetch("/bibleData/books.json"); // Path to your books.json
+    if (!response.ok) throw new Error("Failed to load books list.");
+    const booksList = await response.json();
+    populateBookDropdown(booksList);
+  } catch (error) {
+    console.error("Error loading books list:", error);
+  }
+}
+
+let populateBookDropdown = function (booksList) {
+  const dropdown = document.getElementById("bookSelect");
+  booksList.forEach((book) => {
+    const option = document.createElement("option");
+    option.value = book.toLowerCase();
+    option.textContent = book;
+    dropdown.appendChild(option);
+  });
+};
+
+// Load the books list on page load
+document.addEventListener("DOMContentLoaded", loadBooksList);
+
+async function fetchChapterData(book, chapter, verse) {
+  try {
+    const response = await fetch(`/bibleData/${book}.json`);
+    if (!response.ok) throw new Error(`Failed to load ${book} data.`);
+    const bookData = await response.json();
+
+    // Find the selected chapter
+    const chapterData = bookData.chapters.find(
+      (chap) => chap.chapter === chapter
+    );
+    if (!chapterData) throw new Error("Chapter not found.");
+
+    // Find the selected verse
+    const verseData = chapterData.verses.find((vers) => vers.verse === verse);
+    if (!verseData) throw new Error("Verse not found.");
+
+    return verseData.text;
+  } catch (error) {
+    console.error("Error fetching chapter/verse data:", error);
+    return null;
+  }
+}
+
+document
+  .getElementById("searchVerseBtn")
+  .addEventListener("click", async function () {
+    const book = document.getElementById("bookSelect").value;
+    const chapter = document.getElementById("chapterInput").value;
+    const verse = document.getElementById("verseInput").value;
+
+    if (!book || !chapter || !verse) {
+      alert("Please select a book, chapter, and verse.");
+      return;
+    }
+
+    const verseText = await fetchChapterData(book, chapter, verse);
+    if (verseText) {
+      passageInput.value = verseText;
+      startButton.classList.add("active");
+      startButton.disabled = false; // Enable the "Start Memorizing" button
+    } else {
+      alert("Verse not found!");
+    }
+  });
+
+let toggleSearchInterface = function () {
+  const bibleSearchContainer = document.getElementById("bibleSearchContainer");
+
+  const currentClipPath = bibleSearchContainer.style.clipPath;
+
+  if (currentClipPath === "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)") {
+    bibleSearchContainer.style.clipPath =
+      "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)";
+  } else {
+    bibleSearchContainer.style.clipPath =
+      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
+  }
+};
+document
+  .getElementById("openBibleSearchInterface")
+  .addEventListener("click", toggleSearchInterface);
