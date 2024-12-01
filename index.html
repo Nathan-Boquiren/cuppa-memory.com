@@ -56,21 +56,36 @@
             </div>
         </div>
 
-        <div id="bibleSearchContainer">
-            <h2>Search for a Bible Verse</h2>
-            <div id="bibleSearch">
-              <label for="bookSelect">Book:</label>
-              <select id="bookSelect" class="searchInput"></select>
-          
-              <label for="chapterInput">Chapter:</label>
-              <input type="number" id="chapterInput" class="searchInput" min="1" max="150">
-          
-              <label for="verseInput">Verse:</label>
-              <input type="number" id="verseInput" class="searchInput" min="1" max="176">
-          
-              <button id="searchVerseBtn" class="searchButton">Search Verse</button>
+        <div id="bibleSearchModal" class="modal">
+            <div class="bibleSearchContainer">
+                <span class="close-btn" id="closeBibleSearchModal">&times;</span>
+                <h2 class="modalHeader">Search for a Bible Verse</h2>
+
+                <div id="bibleSearch">
+
+                    <div class="searchFilterOption">
+                        <label for="bookSelect">Book</label>
+                        <select id="bookSelect" class="searchInput"></select>
+                    </div>
+
+                    <div class="searchFilterOption">
+                        <label for="chapterInput">Chapter</label>
+                        <input type="number" id="chapterInput" class="searchInput" min="1" max="150">
+                    </div>
+
+                    <div class="searchFilterOption">
+                        <label for="verseInput">Verse</label>
+                        <input type="number" id="verseInput" class="searchInput" min="1" max="176">
+                    </div>
+            
+                    
+
+                </div>
+
+                <button id="searchVerseBtn" class="searchButton">Search Verse →</button>
             </div>
-        </div>
+          </div>
+          
 
 
         <textarea id="passageInput" placeholder="Write or paste the passage that you want to memorize here"></textarea>

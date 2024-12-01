@@ -1,3 +1,6 @@
+// ========================
+// 0. GLOBAL VARIABLES
+// ========================
 let passage = "";
 let words = [];
 let round = 1;
@@ -5,9 +8,141 @@ let currentMissingWords = [];
 let maxRoundsPerLevel = 5;
 let level = 1;
 
+// ========================
+// 1. BEGINNING OF GAME: INPUT METHOD CHOICE
+// ========================
+
+const inputChoiceContainer = document.getElementById("chooseInputMethod");
+const bibleSearchContainer = document.getElementById("bibleSearchContainer");
+const inputContainer = document.getElementById("passageInput");
+
+const openBibleSearchBtn = document.getElementById("openBibleSearchInterface");
+const openManualInputBtn = document.getElementById("manualInput");
+
+// ===== TOGGLE BIBLE SEARCH INTERFACE =====
+
+const bibleSearchModal = document.getElementById("bibleSearchModal");
+const closeBibleSearchModal = document.getElementById("closeBibleSearchModal");
+
+// Open modal
+openBibleSearchBtn.addEventListener("click", function () {
+  bibleSearchModal.classList.add("show");
+});
+
+// Close modal
+closeBibleSearchModal.addEventListener("click", function () {
+  bibleSearchModal.classList.remove("show");
+});
+
+// Close modal when clicking outside the modal content
+window.addEventListener("click", function (event) {
+  if (event.target === bibleSearchModal) {
+    bibleSearchModal.classList.remove("show");
+  }
+});
+
+// ===== TOGGLE MANUAL INPUT TEXT FIELD =====
+let toggleManualInputField = function () {
+  inputContainer.style.display = "block";
+  inputChoiceContainer.style.display = "none";
+  startButton.style.display = "block";
+};
+openManualInputBtn.addEventListener("click", toggleManualInputField);
+
+// ========================
+// 5. BIBLE VERSE SEARCH
+// ========================
+
+// Functions to load books and fetch specific verse data
+async function loadBooksList() {
+  try {
+    const response = await fetch("/bibleData/books.json"); // Path to your books.json
+    if (!response.ok) throw new Error("Failed to load books list.");
+    const booksList = await response.json();
+    populateBookDropdown(booksList);
+  } catch (error) {
+    console.error("Error loading books list:", error);
+  }
+}
+
+function populateBookDropdown(booksList) {
+  const dropdown = document.getElementById("bookSelect");
+  booksList.forEach((book) => {
+    const option = document.createElement("option");
+    option.value = book.toLowerCase(); // Match with file names like "genesis.json"
+    option.textContent = book;
+    dropdown.appendChild(option);
+  });
+}
+
+// Load the books list on page load
+document.addEventListener("DOMContentLoaded", loadBooksList);
+
+async function fetchChapterData(book, chapter, verse) {
+  try {
+    const response = await fetch(`/bibleData/${book}.json`); // e.g., "/bibleData/genesis.json"
+    if (!response.ok) throw new Error(`Failed to load ${book} data.`);
+    const bookData = await response.json();
+
+    // Find the selected chapter
+    const chapterData = bookData.chapters.find(
+      (chap) => chap.chapter === chapter
+    );
+    if (!chapterData) throw new Error("Chapter not found.");
+
+    // Find the selected verse
+    const verseData = chapterData.verses.find((vers) => vers.verse === verse);
+    if (!verseData) throw new Error("Verse not found.");
+
+    return verseData.text;
+  } catch (error) {
+    console.error("Error fetching chapter/verse data:", error);
+    return null;
+  }
+}
+
+// Event listeners for verse search
+document
+  .getElementById("searchVerseBtn")
+  .addEventListener("click", async function () {
+    const book = document.getElementById("bookSelect").value;
+    const chapter = document.getElementById("chapterInput").value;
+    const verse = document.getElementById("verseInput").value;
+
+    if (!book || !chapter || !verse) {
+      alert("Please select a book, chapter, and verse.");
+      return;
+    }
+
+    const verseText = await fetchChapterData(book, chapter, verse);
+    if (verseText) {
+      passageInput.style.display = "block";
+      bibleSearchModal.style.display = "none";
+      inputChoiceContainer.style.display = "none";
+      startButton.style.display = "block";
+      passageInput.value = verseText;
+      startButton.classList.add("active");
+      startButton.disabled = false; // Enable the "Start Memorizing" button
+    } else {
+      alert("Verse not found!");
+    }
+  });
+
+//
+//
+//
+//
+// ======== GAME LOGIC =========
+//
+//
+//
+// ========================
+// 2. BEGINNING OF GAME: PASSAGE INPUT
+// ========================
 const passageInput = document.getElementById("passageInput");
 const startButton = document.getElementById("startBtn");
 
+// Enable/disable start button based on input
 passageInput.addEventListener("input", function () {
   if (passageInput.value.trim() !== "") {
     startButton.classList.add("active");
@@ -17,20 +152,26 @@ passageInput.addEventListener("input", function () {
     startButton.disabled = true;
   }
 });
-
 startButton.disabled = true;
 
-let startGame = function () {
+document.addEventListener("DOMContentLoaded", () => {
+  const element = document.getElementById("passageInput");
+  element.classList.add("visible");
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const element = document.getElementById("gameArea");
+  element.classList.add("visible");
+});
+
+const startGame = function () {
   passage = document.getElementById("passageInput").value;
-
-  localStorage.setItem("lastPassage", passage);
-
+  localStorage.setItem("lastPassage", passage); // Save the passage
   initializeGame(passage);
 };
 
-let restartGame = function () {
+const restartGame = function () {
   const savedPassage = localStorage.getItem("lastPassage");
-
   if (savedPassage) {
     initializeGame(savedPassage);
   } else {
@@ -38,25 +179,31 @@ let restartGame = function () {
   }
 };
 
-let initializeGame = function (gamePassage) {
+// Event listeners for start and restart buttons
+document.getElementById("startBtn").addEventListener("click", startGame);
+document.getElementById("restartGame").addEventListener("click", restartGame);
+
+// ========================
+// 3. GAME LOGIC
+// ========================
+const initializeGame = function (gamePassage) {
   passage = gamePassage;
   words = passage.split(" ");
   round = 1;
   level = 1;
 
+  // Hide initial input, show game area
   document.getElementById("passageInput").style.display = "none";
   document.getElementById("startBtn").style.display = "none";
   document.getElementById("gameEndButtons").style.display = "none";
   document.getElementById("gameArea").style.display = "block";
   document.getElementById("userInput").style.display = "block";
   document.getElementById("inputOther").style.display = "flex";
+
   nextRound();
 };
 
-document.getElementById("startBtn").addEventListener("click", startGame);
-document.getElementById("restartGame").addEventListener("click", restartGame);
-
-let nextRound = function () {
+const nextRound = function () {
   document.getElementById("feedback").textContent = "";
   document.getElementById("userInput").value = "";
   document.getElementById("userInput").style.borderColor = "#775932";
@@ -89,7 +236,7 @@ let nextRound = function () {
   round++;
 };
 
-let getRandomWords = function (count) {
+const getRandomWords = function (count) {
   const indices = [];
   while (indices.length < count) {
     const randIndex = Math.floor(Math.random() * words.length);
@@ -98,7 +245,7 @@ let getRandomWords = function (count) {
   return indices;
 };
 
-let displayPassage = function () {
+const displayPassage = function () {
   const displayText = words
     .map((word, index) =>
       currentMissingWords.includes(index)
@@ -106,15 +253,14 @@ let displayPassage = function () {
         : word
     )
     .join(" ");
-
   document.getElementById("displayText").innerHTML = displayText;
 };
 
-let normalizeText = function (text) {
+const normalizeText = function (text) {
   return text.replace(/[.,/#!$%^&*;:{}=\-_`~()?"']/g, "").toLowerCase();
 };
 
-let checkAnswer = function () {
+const checkAnswer = function () {
   const userAnswer = normalizeText(
     document.getElementById("userInput").value.trim()
   );
@@ -143,13 +289,14 @@ let checkAnswer = function () {
 
     document.getElementById(
       "correctAnswer"
-    ).innerHTML = `<div class = "correctAnswer">CORRECT ANSWER: ${correctAnswers.join(
+    ).innerHTML = `<div class="correctAnswer">CORRECT ANSWER: ${correctAnswers.join(
       " "
     )}</div>`;
     document.getElementById("correctAnswer").style.display = "inline-block";
   }
 };
 
+// Add keyboard listener for Enter key
 document
   .getElementById("userInput")
   .addEventListener("keydown", function (event) {
@@ -168,98 +315,13 @@ document
 
 document.getElementById("submitBtn").addEventListener("click", checkAnswer);
 
-let endGame = function () {
+// ========================
+// 4. END OF GAME
+// ========================
+const endGame = function () {
   document.getElementById("displayText").textContent =
     "Great job! You've completed the passage!";
   document.getElementById("userInput").style.display = "none";
   document.getElementById("inputOther").style.display = "none";
   document.getElementById("gameEndButtons").style.display = "flex";
 };
-
-// Bible Database
-
-async function loadBooksList() {
-  try {
-    const response = await fetch("/bibleData/books.json"); // Path to your books.json
-    if (!response.ok) throw new Error("Failed to load books list.");
-    const booksList = await response.json();
-    populateBookDropdown(booksList);
-  } catch (error) {
-    console.error("Error loading books list:", error);
-  }
-}
-
-let populateBookDropdown = function (booksList) {
-  const dropdown = document.getElementById("bookSelect");
-  booksList.forEach((book) => {
-    const option = document.createElement("option");
-    option.value = book.toLowerCase();
-    option.textContent = book;
-    dropdown.appendChild(option);
-  });
-};
-
-// Load the books list on page load
-document.addEventListener("DOMContentLoaded", loadBooksList);
-
-async function fetchChapterData(book, chapter, verse) {
-  try {
-    const response = await fetch(`/bibleData/${book}.json`);
-    if (!response.ok) throw new Error(`Failed to load ${book} data.`);
-    const bookData = await response.json();
-
-    // Find the selected chapter
-    const chapterData = bookData.chapters.find(
-      (chap) => chap.chapter === chapter
-    );
-    if (!chapterData) throw new Error("Chapter not found.");
-
-    // Find the selected verse
-    const verseData = chapterData.verses.find((vers) => vers.verse === verse);
-    if (!verseData) throw new Error("Verse not found.");
-
-    return verseData.text;
-  } catch (error) {
-    console.error("Error fetching chapter/verse data:", error);
-    return null;
-  }
-}
-
-document
-  .getElementById("searchVerseBtn")
-  .addEventListener("click", async function () {
-    const book = document.getElementById("bookSelect").value;
-    const chapter = document.getElementById("chapterInput").value;
-    const verse = document.getElementById("verseInput").value;
-
-    if (!book || !chapter || !verse) {
-      alert("Please select a book, chapter, and verse.");
-      return;
-    }
-
-    const verseText = await fetchChapterData(book, chapter, verse);
-    if (verseText) {
-      passageInput.value = verseText;
-      startButton.classList.add("active");
-      startButton.disabled = false; // Enable the "Start Memorizing" button
-    } else {
-      alert("Verse not found!");
-    }
-  });
-
-let toggleSearchInterface = function () {
-  const bibleSearchContainer = document.getElementById("bibleSearchContainer");
-
-  const currentClipPath = bibleSearchContainer.style.clipPath;
-
-  if (currentClipPath === "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)") {
-    bibleSearchContainer.style.clipPath =
-      "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)";
-  } else {
-    bibleSearchContainer.style.clipPath =
-      "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)";
-  }
-};
-document
-  .getElementById("openBibleSearchInterface")
-  .addEventListener("click", toggleSearchInterface);
