@@ -56,7 +56,9 @@ openManualInputBtn.addEventListener("click", toggleManualInputField);
 // Functions to load books and fetch specific verse data
 async function loadBooksList() {
   try {
-    const response = await fetch("/bibleData/books.json"); // Path to your books.json
+    const response = await fetch(
+      "https://nathan-boquiren.github.io/cuppa-memory.com//bibleData/Books.json"
+    ); // Path to your books.json
     if (!response.ok) throw new Error("Failed to load books list.");
     const booksList = await response.json();
     populateBookDropdown(booksList);
@@ -80,7 +82,9 @@ document.addEventListener("DOMContentLoaded", loadBooksList);
 
 async function fetchChapterData(book, chapter, verse) {
   try {
-    const response = await fetch(`/bibleData/${book}.json`); // e.g., "/bibleData/genesis.json"
+    const response = await fetch(
+      `https://nathan-boquiren.github.io/cuppa-memory.com//bibleData/${book}.json`
+    ); // e.g., "/bibleData/genesis.json"
     if (!response.ok) throw new Error(`Failed to load ${book} data.`);
     const bookData = await response.json();
 

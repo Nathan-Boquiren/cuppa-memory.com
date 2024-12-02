@@ -215,7 +215,9 @@ nav ul li a {
     padding-top: 35px;
 }
 .inputMethodChoices p {
-    color: white;
+    color: var(--mid-dark-brown);
+    font-weight: 900;
+    font-size: 30px;
 }
 
 .inputMethodChoices button {
@@ -599,6 +601,7 @@ button:hover,
     width: 70vw;
     width: clamp(300px, 80vw, 800px);
     margin: 3vh 0;
+    padding-bottom: 50px;
     background-color: #fff;
     border-radius: 20px;
     display: flex;
@@ -722,13 +725,17 @@ li {
 
 .article-container {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 10vw;
 }
 article {
-    width: clamp(280px, 70vw, 2000px);
+    width: clamp(280px, 60vw, 1000px);
     text-align: left;
 }
 
+.article-container article section p {
+    font-size: 1em;
+}
 .article-header {
     
     background-color: white;
@@ -748,6 +755,7 @@ article {
     letter-spacing: 1px;
     display: flex;
     flex-wrap: wrap;
+    color: var(--mid-dark-brown);
 }
 
 @media (max-width: 605px) {
