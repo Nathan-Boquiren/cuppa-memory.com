@@ -22,11 +22,12 @@
 
 
 body {
-    height: 100vh;
+    /* height: 100vh; */
     text-align: center;
     background-color: var(--light-brown);
     position: relative;
     padding-top: 100px;
+    padding-bottom: 50px;
 }
 
 
