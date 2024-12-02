@@ -71,7 +71,7 @@ function populateBookDropdown(booksList) {
   const dropdown = document.getElementById("bookSelect");
   booksList.forEach((book) => {
     const option = document.createElement("option");
-    option.value = book.toLowerCase(); // Match with file names like "genesis.json"
+    // option.value = book.toLowerCase(); // Match with file names like "genesis.json"
     option.textContent = book;
     dropdown.appendChild(option);
   });
@@ -84,7 +84,7 @@ async function fetchChapterData(book, chapter, verse) {
   try {
     const response = await fetch(
       `https://nathan-boquiren.github.io/cuppa-memory.com//bibleData/${book}.json`
-    ); // e.g., "/bibleData/genesis.json"
+    );
     if (!response.ok) throw new Error(`Failed to load ${book} data.`);
     const bookData = await response.json();
 
