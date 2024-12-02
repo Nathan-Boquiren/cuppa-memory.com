@@ -80,8 +80,6 @@ function populateBookDropdown(booksList) {
 // Load the books list on page load
 document.addEventListener("DOMContentLoaded", loadBooksList);
 
-console.log("Matching Verse:", verseData);
-
 async function fetchChapterData(book, chapter, verse) {
   try {
     const response = await fetch(
