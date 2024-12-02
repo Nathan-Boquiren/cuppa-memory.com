@@ -80,6 +80,8 @@ function populateBookDropdown(booksList) {
 // Load the books list on page load
 document.addEventListener("DOMContentLoaded", loadBooksList);
 
+console.log("Matching Verse:", verseData);
+
 async function fetchChapterData(book, chapter, verse) {
   try {
     const response = await fetch(
@@ -88,19 +90,24 @@ async function fetchChapterData(book, chapter, verse) {
     if (!response.ok) throw new Error(`Failed to load ${book} data.`);
     const bookData = await response.json();
 
-    // Find the selected chapter
+    console.log("Chapter:", chapter, "Verse:", verse);
+    // Find the selected chapter (string comparison since JSON stores chapters as strings)
     const chapterData = bookData.chapters.find(
-      (chap) => chap.chapter === Number(chapter)
+      (chap) => chap.chapter === chapter.toString()
     );
+
+    console.log("Matching Chapter:", chapterData);
     if (!chapterData) throw new Error("Chapter not found.");
 
-    // Find the selected verse
+    // Find the selected verse (string comparison for the same reason)
     const verseData = chapterData.verses.find(
-      (vers) => vers.verse === Number(verse)
+      (vers) => vers.verse === verse.toString()
     );
+
+    console.log("Matching Verse Data:", verseData); // Log the matching verse
     if (!verseData) throw new Error("Verse not found.");
 
-    return verseData.text;
+    return verseData.text; // Return the verse text if found
   } catch (error) {
     console.error("Error fetching chapter/verse data:", error);
     return null;
@@ -114,6 +121,11 @@ document
     const book = document.getElementById("bookSelect").value; // Get the selected book name
     const chapter = document.getElementById("chapterInput").value;
     const verse = document.getElementById("verseInput").value;
+
+    // Log inputs before fetching the verse
+    console.log("Selected Book:", book);
+    console.log("Selected Chapter:", chapter);
+    console.log("Selected Verse:", verse);
 
     if (!book || !chapter || !verse) {
       alert("Please select a book, chapter, and verse.");
