@@ -82,8 +82,10 @@ document.addEventListener("DOMContentLoaded", loadBooksList);
 
 async function fetchChapterData(book, chapter, verse) {
   try {
+    // Remove any spaces from book name for file path consistency
+    const formattedBook = book.replace(/\s+/g, ""); // This removes all spaces
     const response = await fetch(
-      `https://nathan-boquiren.github.io/cuppa-memory.com//bibleData/${book}.json`
+      `https://nathan-boquiren.github.io/cuppa-memory.com//bibleData/${formattedBook}.json`
     );
     if (!response.ok) throw new Error(`Failed to load ${book} data.`);
     const bookData = await response.json();
