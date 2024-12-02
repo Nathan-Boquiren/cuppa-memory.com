@@ -71,7 +71,7 @@ function populateBookDropdown(booksList) {
   const dropdown = document.getElementById("bookSelect");
   booksList.forEach((book) => {
     const option = document.createElement("option");
-    // option.value = book.toLowerCase(); // Match with file names like "genesis.json"
+    option.value = book; // Use the original case-sensitive book name
     option.textContent = book;
     dropdown.appendChild(option);
   });
@@ -90,12 +90,14 @@ async function fetchChapterData(book, chapter, verse) {
 
     // Find the selected chapter
     const chapterData = bookData.chapters.find(
-      (chap) => chap.chapter === chapter
+      (chap) => chap.chapter === Number(chapter)
     );
     if (!chapterData) throw new Error("Chapter not found.");
 
     // Find the selected verse
-    const verseData = chapterData.verses.find((vers) => vers.verse === verse);
+    const verseData = chapterData.verses.find(
+      (vers) => vers.verse === Number(verse)
+    );
     if (!verseData) throw new Error("Verse not found.");
 
     return verseData.text;
@@ -109,7 +111,7 @@ async function fetchChapterData(book, chapter, verse) {
 document
   .getElementById("searchVerseBtn")
   .addEventListener("click", async function () {
-    const book = document.getElementById("bookSelect").value;
+    const book = document.getElementById("bookSelect").value; // Get the selected book name
     const chapter = document.getElementById("chapterInput").value;
     const verse = document.getElementById("verseInput").value;
 
